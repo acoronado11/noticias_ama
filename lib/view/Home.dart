@@ -21,12 +21,18 @@ class _homeState extends State<Home>{
     return new Future.delayed(Duration(seconds: 5), ()=> "Cargado Correctamente");
   }
 
+  obteniendoDatosImportantes() async{
+    var recursos = await Requests.peticionRecursos();
+    print("Recursos: " + recursos.toString());
+    return await Requests.peticionNoticias();
+  }
+
   @override
   Widget build(BuildContext context) {
 
     var _asyncLoader = new AsyncLoader(
       key: _asyncLoaderState,
-      initState: () async => await Requests.peticionNoticias(),
+      initState: () async => await obteniendoDatosImportantes(),
       renderLoad: () => Center(child: CircularProgressIndicator(),),
       renderError: ([error])=> Center(child: Text("Ocurrio un error en la carga"),),
       renderSuccess: ({data}) => Padding(

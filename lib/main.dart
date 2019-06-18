@@ -1,38 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:noticias_ama/view/DetailScreen.dart';
+import 'view/Home.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Transition Demo',
-      home: MainScreen(),
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Mai screen'),
+    return new MaterialApp(
+      title: 'Noticias384',
+      theme: new ThemeData(
+          primarySwatch: Colors.green,
+          accentColor: Colors.red
       ),
-      body: GestureDetector(
-        child: Hero(
-          tag: 'imageHero',
-          child: Image.network(
-            'https://picsum.photos/250?image=9',
-          ),
-        ),
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return DetailScreen();
-          }));
-        },
-      ),
+      home: new Home(),
     );
   }
 }
