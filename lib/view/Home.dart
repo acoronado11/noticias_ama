@@ -14,6 +14,8 @@ class Home extends StatefulWidget{
 }
 
 class _homeState extends State<Home>{
+  var _recursos = [];
+  var _recursoSeleccionado;
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
   new GlobalKey<AsyncLoaderState>();
 
@@ -23,8 +25,15 @@ class _homeState extends State<Home>{
 
   obteniendoDatosImportantes() async{
     var recursos = await Requests.peticionRecursos();
-    print("Recursos: " + recursos.toString());
-    return await Requests.peticionNoticias();
+    //print("Recursos: " + recursos.toString());
+    recursos.add({
+      "id" : "todos",
+      "name" : "Todos"
+    });
+    setState(() {
+      _recursos = recursos;
+    });
+    return await Requests.peticionNoticias(_recursoSeleccionado);
   }
 
   @override
@@ -52,10 +61,25 @@ class _homeState extends State<Home>{
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (seleccion){
-
+              print("Seleccion: "+ seleccion);
+              if(seleccion == "todos"){
+                setState(() {
+                  _recursoSeleccionado = null;
+                });
+              }else {
+                setState(() {
+                  _recursoSeleccionado = seleccion;
+                });
+              }
+              _asyncLoaderState.currentState.reloadState();
             },
             itemBuilder: (BuildContext context){
-
+              return _recursos.map((objeto){
+                return PopupMenuItem(
+                  value: objeto["id"],
+                  child: Text(objeto["name"]),
+                );
+              }).toList();
             },
           )
         ],
